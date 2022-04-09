@@ -1,0 +1,42 @@
+#include <Adafruit_BMP085.h>  
+#include <Wire.h>  
+#include <LiquidCrystal.h>  
+LiquidCrystal lcd(13, 12, 11, 10, 9, 8); 
+  
+char PRESSURESHOW[4];
+char TEMPERATURESHOW[4];  
+Adafruit_BMP085 bmp;  
+  
+void setup() {  
+  lcd.begin(16, 2);  
+   
+  lcd.print(" BMP180 Sensor");  
+  lcd.setCursor(0, 1);  
+  lcd.print("Temp. & Pressure");  
+  lcd.setCursor(0, 2);  
+  delay (3000);  
+  
+  lcd.clear();
+  Serial.begin(9600);  
+  if (!bmp.begin()){  
+    Serial.println("ERROR");
+    while (1) {}  
+  }  
+}  
+void loop(){  
+  lcd.print("Pressure= "); 
+  String PRESSUREVALUE = String(bmp.readPressure());  
+   
+  PRESSUREVALUE.toCharArray(PRESSURESHOW, 4);  
+  lcd.print(PRESSURESHOW);  
+  lcd.print("hPa ");  
+  lcd.setCursor(0, 1);  
+  lcd.print("Temperature="); 
+  String TEMPERATUREVALUE = String(bmp.readTemperature());  
+    
+  TEMPERATUREVALUE.toCharArray(TEMPERATURESHOW, 4);  
+  lcd.print(TEMPERATURESHOW);  
+  lcd.print("C ");  
+  lcd.setCursor(0,0);
+  delay(500);  
+}  
